@@ -28,12 +28,22 @@
     String connectionUrl = "jdbc:sqlserver://GOKULKRISHNAM:1433;databaseName=tagic;user=mgokul;password=Mgokul@07";
 %>
 
+<%   
+/* String name1=request.getParameter("stvalue");
+String name2=request.getParameter("edvalue");
+System.out.println("fasdfsadf :"+name1);
+System.out.println("xvxcvxcv :"+name2);
+session.setAttribute("user",name1); */
+%>
+
 <%
 	try{
 		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		con = DriverManager.getConnection(connectionUrl);
-		fdate = request.getParameter("startdate");
-		tdate = request.getParameter("enddate");
+		/* fdate = request.getParameter("startingdate");
+		tdate = request.getParameter("endingdate"); */
+		fdate = request.getParameter("stvalue");
+		tdate = request.getParameter("edvalue");
 		
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet();
@@ -55,6 +65,9 @@
 		styleHead.setDataFormat(format.getFormat("@"));
 		styleHead.setFont(fontHead);
 		String[] header = {"Date","Day","Project Name","Project Description"};
+		
+		/* System.out.println("fdate :"+fdate);
+		System.out.println("tdate :"+tdate); */
 		int i = 0,j=0;
 		row = sheet.createRow(0);
 		
@@ -72,7 +85,7 @@
 		
 		//query = "select TASK_DATE AS Date1,TASK_DAY AS Day,PROJECT_NAME AS [Project Name],PROJECT_DESCRIPTION AS [Project Description] FROM T_ONLINE_PROJECT_DETAILS WHERE CONVERT(VARCHAR,TASK_DATE,101) >= '01/11/2020' AND CONVERT(VARCHAR,TASK_DATE,101) <= '30/11/2020'";
 		
-		//System.out.println("query :"+query);
+		/* System.out.println("query :"+query); */
 		stmt = con.prepareStatement(query);
 		
 		stmt.clearParameters();
@@ -85,7 +98,7 @@
 		
 		//System.out.println("fdate :"+fdate);
 		//System.out.println("tdate :"+tdate);
-		
+		/* System.out.println("tdate :"+rs.next()); */
 		while(rs.next()){
 			row = sheet.createRow(temp);
 			for(int l = 0;l<header.length;l++){
@@ -122,9 +135,13 @@
 	}catch(Exception e){
 		System.out.println(e.toString());
 	}finally{
+		//System.out.println("Gokul Krishna");
 		if(con != null){
 			con.close();
 			rs = null;
+			stmt = null;
+			//System.out.println("Lavanya");
 		}
+		//System.out.println("Krishna");
 	}
 %>
