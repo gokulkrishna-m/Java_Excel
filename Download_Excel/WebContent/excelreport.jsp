@@ -20,7 +20,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>    
 
 <%!
-	String fdate="",tdate="",query="";
+	String fdate="",tdate="",query="",fd="",td="";
 	Connection con = null;
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
@@ -42,8 +42,10 @@ session.setAttribute("user",name1); */
 		con = DriverManager.getConnection(connectionUrl);
 		/* fdate = request.getParameter("startingdate");
 		tdate = request.getParameter("endingdate"); */
-		fdate = request.getParameter("stvalue");
-		tdate = request.getParameter("edvalue");
+		fd = request.getParameter("stvalue");
+		td = request.getParameter("edvalue");
+		fdate = fd.split("/")[2]+"/"+fd.split("/")[1]+"/"+fd.split("/")[0];
+		tdate = td.split("/")[2]+"/"+td.split("/")[1]+"/"+td.split("/")[0];
 		
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet();
@@ -81,7 +83,7 @@ session.setAttribute("user",name1); */
 		//System.out.println("tdate :"+tdate);
 		
 		query = "select TASK_DATE AS Date,TASK_DAY AS Day,PROJECT_NAME AS [Project Name],PROJECT_DESCRIPTION AS [Project Description] FROM T_ONLINE_PROJECT_DETAILS ";
-		query += "WHERE CONVERT(VARCHAR,TASK_DATE,101) >= ? AND CONVERT(VARCHAR,TASK_DATE,101) <= ?";
+		query += "WHERE TASK_DATE >= ? AND TASK_DATE <= ?";
 		
 		//query = "select TASK_DATE AS Date1,TASK_DAY AS Day,PROJECT_NAME AS [Project Name],PROJECT_DESCRIPTION AS [Project Description] FROM T_ONLINE_PROJECT_DETAILS WHERE CONVERT(VARCHAR,TASK_DATE,101) >= '01/11/2020' AND CONVERT(VARCHAR,TASK_DATE,101) <= '30/11/2020'";
 		
